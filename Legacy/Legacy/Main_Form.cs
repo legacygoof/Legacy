@@ -10,16 +10,21 @@ using System.Windows.Forms;
 
 namespace Legacy
 {
-    public partial class Form1 : Form
+    public partial class Main_Form : Form
     {
-        public Form1()
+        public Main_Form()
         {
             InitializeComponent();
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            int 1; //lots to do
+            MessageBox.Show("gg");
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
         }
     }
 }

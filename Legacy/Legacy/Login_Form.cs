@@ -44,5 +44,15 @@ namespace Legacy
         {
             Application.Exit();
         }
+
+        private void pictureBox1_MouseHover(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Properties.Resources.ExitApp_Hover_Pic;
+        }
+
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Properties.Resources.ExitApp_Pic;
+        }
     }
 }

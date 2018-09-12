@@ -36,6 +36,7 @@ namespace Legacy
         private void Login_Form_Load(object sender, EventArgs e)
         {
             msgLoop = new Thread(ServerMsgLoop);
+            msgLoop.IsBackground = true;
             this.panel1.MouseDown += panel1_MouseDown;
             Connect();
         }
@@ -64,7 +65,19 @@ namespace Legacy
                 int recSize = client.Receive(recBuffer);
                 byte[] recData = new byte[recSize];
                 Array.Copy(recBuffer, recData, recSize);
+                string msg = Encoding.ASCII.GetString(recData);
+                string[] msgArgs = msg.Split(' ');
+                //MessageBox.Show(msgArgs[0]);
                 MessageBox.Show(Encoding.ASCII.GetString(recData));
+                //ErrorCodes code = (ErrorCodes)UInt16.Parse(msgArgs[0]);
+                if (msgArgs[0] == ErrorCodes.Success.ToString())
+                {
+
+                    msgLoop.Start();
+                    Main_Form form = new Main_Form();
+                    form.Show();
+                    this.Hide();
+                }
             }
         }
 

@@ -75,7 +75,15 @@ namespace Server
             }
             catch (SocketException)
             {
-                Console.WriteLine("client forcefully disconnected");
+                Users user = userList.Find(i => i.IP == socket.RemoteEndPoint.ToString());
+                if (user.Name != null && user.Name != "")
+                {
+                    Console.WriteLine(user.Name+" Has Forcefully Disconnected!");
+                    Login_Helper.UpdateUser(user.Name);
+                }
+                else
+                    Console.WriteLine("client forcefully disconnected");
+
                 var ItemToRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
                 socket.Close();
                 //clientSockets.Remove(socket);
@@ -85,10 +93,13 @@ namespace Server
             //incase the code given is not an actual code so we dont run into formatting problems and the server crashes
             try
             {
+                
                 code = (ProcessCodes)UInt16.Parse(msg[0]);
             }
             catch(System.FormatException e)
             {
+                var toRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
+                userList.Remove(toRemove);
                 Console.WriteLine("Error connecting user, possibly malicaious "  + socket.RemoteEndPoint);
                 return;
             }
@@ -99,6 +110,12 @@ namespace Server
                         //ProcessLogin(msg,ar);
                         ErrorCodes tempCode = Login_Helper.doLogin(msg[1], msg[2]);
                         byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(tempCode));
+                        if(tempCode == ErrorCodes.Success)
+                        {
+                            userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
+                            IPEndPoint ipAdd = socket.RemoteEndPoint as IPEndPoint;
+                            Login_Helper.UpdateUser(ipAdd.ToString(),msg[1],1);
+                        }
                         socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                         socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
                         Console.WriteLine(Convert.ToString(tempCode));
@@ -137,7 +154,7 @@ namespace Server
 
         }
 
-        private void drawLogo()
+        public void drawLogo()
         {
             Console.WriteLine("$$\\                                                        ");
             Console.WriteLine("$$ |                                                       ");

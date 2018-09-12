@@ -59,11 +59,37 @@ namespace Server
             }
             
         }
-
-        public static void UpdateUser(string ip)
+        //set user to logged in and update ip
+        public static void UpdateUser(string ip, string username, int type)
         {
+            string query = "UPDATE Users SET IP=@ip,LoggedIn=@logged Where Username=@uname";
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@ip", ip);
+            cmd.Parameters.AddWithValue("@logged", Convert.ToBoolean(true));
+            cmd.Parameters.AddWithValue("@uname", username);
+            cmd.Connection = dbConn;
+            dbConn.Open();
+            cmd.ExecuteReader();
+            dbConn.Close();
+        }
+        //when user logs out, overloaded method cause lazy :p
+        public static void UpdateUser(string username)
+        {
+            string query = "UPDATE Users SET LoggedIn=@logged Where Username=@uname";
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@logged", Convert.ToBoolean(false));
+            cmd.Parameters.AddWithValue("@uname", username);
+            cmd.Connection = dbConn;
+            dbConn.Open();
+            cmd.ExecuteReader();
+            dbConn.Close();
+        }
 
-            
+        public static void BanUser(string username)
+        {
+            Console.WriteLine(username + " Has Been Banned By Server!");
         }
 
         public static ErrorCodes doRegister(string email, string username, string password)

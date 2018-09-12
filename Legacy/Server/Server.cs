@@ -97,12 +97,18 @@ namespace Server
              {
                  case ProcessCodes.Login: {
                         //ProcessLogin(msg,ar);
-
-                        if (Login_Helper.doLogin(msg[1], msg[2]) == ErrorCodes.Success)
+                        ErrorCodes tempCode = Login_Helper.doLogin(msg[1], msg[2]);
+                        byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(tempCode));
+                        socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
+                        socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+                        Console.WriteLine(Convert.ToString(tempCode));
+                        /*if (Login_Helper.doLogin(msg[1], msg[2]) == ErrorCodes.Success)
                         {
                             userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
                             Console.WriteLine("User " + msg[1] + " Has logged in ");
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Success));//success error code
+                            IPEndPoint ipAdd = socket.RemoteEndPoint as IPEndPoint;
+                            Login_Helper.UpdateUser(ipAdd.ToString());
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
                         }
@@ -111,9 +117,9 @@ namespace Server
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.InvalidLogin));//success error code
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
-                        }
-                        } break;
-                 case ProcessCodes.Register: { ProcessRegister(msg); }break;
+                        }*/
+                    } break;
+                 case ProcessCodes.Register: { Login_Helper.doRegister("","",""); }break;
                   default: { ProcessError(ar); }break;
              }
         }

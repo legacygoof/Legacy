@@ -29,7 +29,9 @@ namespace Server
         /// <param name="args"></param>
         static void Main(string[] args)
         {
+
             server.Start();
+            Login_Helper.InitializeDB();
             Console.ReadLine();
         }
 

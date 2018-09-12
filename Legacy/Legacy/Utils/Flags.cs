@@ -17,5 +17,8 @@ public enum ErrorCodes : ushort
     Success,
     Exists,
     InvalidLogin,
+    Banned,
+    TokenUsed,
+    AlreadyLogged,
     Error
 }

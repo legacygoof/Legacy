@@ -10,9 +10,10 @@ namespace Server
 {
     class Server
     {
-        private byte[] buffer = new byte[1024];
+        private byte[] g_buffer = new byte[1024];
         Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-        List<Socket> clientSockets = new List<Socket>();
+        List<Users> userList = new List<Users>();
+        //List<Socket> clientSockets = new List<Socket>();
 
         public void Start()
         {
@@ -41,43 +42,50 @@ namespace Server
             {
                 return;
             }
-            clientSockets.Add(socket);
+            userList.Add(new Users(socket.RemoteEndPoint.ToString(), socket));
             Console.WriteLine("Client Connected!");
-            socket.BeginReceive(buffer, 0, buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
             server.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
 
         private void ReceiveCallback(IAsyncResult ar)
         {
-            ProcessCodes code;
-            //PacketReader pr = new PacketReader();
-            //PacketWriter pw = new PacketWriter();
+            //better to initailize these outside the try catch to make them accessable throughout method
             Socket socket = (Socket)ar.AsyncState;
-            int received = socket.EndReceive(ar);
-            byte[] dataBuff = new byte[received];
-            Array.Copy(buffer, dataBuff, received);
-            string text = Encoding.ASCII.GetString(dataBuff);
-            Console.WriteLine(text);
+            ProcessCodes code;
             string[] msg;
-            msg = text.Split(' ');
+            int received;
+            string text;
+            byte[] dataBuff;
+
+            //Everythings done in a try catch in case the client unexpectedly disconnects it doesnt crash the server
             try
             {
-                // receieved = socket.EndReceive(ar);
-                //msg = pr.ReceiveMsg(socket.EndReceive(ar), buffer);//decrypts message and splits into string
-                Console.WriteLine(msg[0]);
-                Console.WriteLine(msg.Length);
+                
+                received = socket.EndReceive(ar);
+                Users user = userList.Find(i => i.IP == socket.RemoteEndPoint.ToString());
+                if (user.Name != null && user.Name != "")
+                {
+                    Console.WriteLine("Received msg from " + user.Name);
+                }
+                dataBuff = new byte[received];
+                Array.Copy(g_buffer, dataBuff, received);
+                text = Encoding.ASCII.GetString(dataBuff);
+                msg = text.Split(' ');
             }
             catch (SocketException)
             {
-                Console.WriteLine("Client Forefully disconnected");
+                Console.WriteLine("client forcefully disconnected");
+                var ItemToRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
                 socket.Close();
-                clientSockets.Remove(socket);
+                //clientSockets.Remove(socket);
+                userList.Remove(ItemToRemove);
                 return;
             }
+            //incase the code given is not an actual code so we dont run into formatting problems and the server crashes
             try
             {
                 code = (ProcessCodes)UInt16.Parse(msg[0]);
-              //  Console.WriteLine("CODE: " + code);
             }
             catch(System.FormatException e)
             {
@@ -89,19 +97,22 @@ namespace Server
              {
                  case ProcessCodes.Login: {
                         //ProcessLogin(msg,ar);
-                        if (msg[1].Equals("goof") && msg[2].Equals(""))
+
+                        if (Login_Helper.doLogin(msg[1], msg[2]) == ErrorCodes.Success)
                         {
+                            userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
+                            Console.WriteLine("User " + msg[1] + " Has logged in ");
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Success));//success error code
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-                            //socket.Send(data);
+                            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
                         }
                         else
                         {
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.InvalidLogin));//success error code
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-                            //socket.Send(data);
+                            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
                         }
-                    } break;
+                        } break;
                  case ProcessCodes.Register: { ProcessRegister(msg); }break;
                   default: { ProcessError(ar); }break;
              }
@@ -115,42 +126,10 @@ namespace Server
             socket.EndSend(ar);
         }
 
-        private void ProcessLogin(string[] info, IAsyncResult ar)
+        private void ProcessError(IAsyncResult AR)
         {
 
-            Console.WriteLine("Processing Login");
-            PacketWriter pw = new PacketWriter();
-            Socket socket = (Socket)ar.AsyncState;
-            //do db stuff to check login
-            if (info[1].Equals("goof") && info[2].Equals(""))
-            {
-                byte[] data = pw.sendString(Convert.ToString(ErrorCodes.Success));//success error code
-                socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-                //socket.Send(data);
-            }
-            else
-            {
-                byte[] data = pw.sendString(Convert.ToString(ErrorCodes.InvalidLogin));//success error code
-                socket.BeginSend(data, 0, data.Length, SocketFlags.None,new AsyncCallback(SendCallback), socket);
-                //socket.Send(data);
-            }
-
         }
-
-        private void ProcessError(IAsyncResult ar)//if theres an error send it
-        {
-            Console.WriteLine("Client Encountered an error");
-            PacketWriter pw = new PacketWriter();
-            Socket socket = (Socket)ar.AsyncState;
-            byte[] data = pw.sendString(Convert.ToString(ErrorCodes.Error));//success error code
-            socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-        }
-
-        private void ProcessRegister(string[] info)
-        {
-            Console.WriteLine("Processing Resgister");
-        }
-
 
         private void drawLogo()
         {

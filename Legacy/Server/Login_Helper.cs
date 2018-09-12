@@ -34,13 +34,17 @@ namespace Server
                 if (reader.GetBoolean("LoggedIn"))
                 {
                     dbConn.Close();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.WriteLine(username + " Attempted To Login But Was Already Logged In!");
+                    Console.ResetColor();
                     return ErrorCodes.AlreadyLogged;
                 }
                 if (reader.GetBoolean("Banned"))
                 {
                     dbConn.Close();
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine(username + " Attempted To Login But Is Banned!");
+                    Console.ResetColor();
                     return ErrorCodes.Banned;
                 }
 
@@ -89,7 +93,34 @@ namespace Server
 
         public static void BanUser(string username)
         {
+            string query = "UPDATE Users SET Banned=@banned Where Username=@uname";
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@banned", Convert.ToBoolean(true));
+            cmd.Parameters.AddWithValue("@uname", username);
+            cmd.Connection = dbConn;
+            dbConn.Open();
+            cmd.ExecuteReader();
+            dbConn.Close();
+            Console.ForegroundColor = ConsoleColor.Red;
             Console.WriteLine(username + " Has Been Banned By Server!");
+            Console.ResetColor();
+        }
+
+        public static void UnBanUser(string username)
+        {
+            string query = "UPDATE Users SET Banned=@banned Where Username=@uname";
+            MySqlCommand cmd = new MySqlCommand();
+            cmd.CommandText = query;
+            cmd.Parameters.AddWithValue("@banned", Convert.ToBoolean(false));
+            cmd.Parameters.AddWithValue("@uname", username);
+            cmd.Connection = dbConn;
+            dbConn.Open();
+            cmd.ExecuteReader();
+            dbConn.Close();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(username + " Has Been Unbanned By Server!");
+            Console.ResetColor();
         }
 
         public static ErrorCodes doRegister(string email, string username, string password)
@@ -110,6 +141,9 @@ namespace Server
             string connString = builder.ToString();
 
             dbConn = new MySqlConnection(connString);
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("DB Intialized");
+            Console.ResetColor();
         }
     }
 }

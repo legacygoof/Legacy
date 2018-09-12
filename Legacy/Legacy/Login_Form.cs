@@ -25,7 +25,9 @@ namespace Legacy
 
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread msgLoop;
-
+        public bool loggedin = false;
+        private static string version = "1.1";
+        private static bool version_checked = false;
         
 
         public Login_Form()
@@ -35,12 +37,31 @@ namespace Legacy
 
         private void Login_Form_Load(object sender, EventArgs e)
         {
+            BackgroundWorker backgroundWorker = new BackgroundWorker();
+            backgroundWorker.DoWork += BackgroundWorker_DoWork;
+            backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
+            backgroundWorker.RunWorkerAsync();
             msgLoop = new Thread(ServerMsgLoop);
             msgLoop.IsBackground = true;
+            msgLoop.Start();
             this.panel1.MouseDown += panel1_MouseDown;
             Connect();
         }
 
+        private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            Main_Form form = new Main_Form();
+            form.Show();
+            this.Hide();
+        }
+
+        private void BackgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            while(loggedin == false)
+            {
+
+            }
+        }
 
         public void ServerMsgLoop()
         {
@@ -49,8 +70,56 @@ namespace Legacy
                 byte[] buffer = new byte[1024];
                 int rec = client.Receive(buffer);
                 byte[] data = new byte[rec];
+
                 Array.Copy(buffer, data, rec);
-                MessageBox.Show(Encoding.ASCII.GetString(data));
+                string msg = Encoding.ASCII.GetString(data);
+                string[] msgArgs = msg.Split(' ');
+                string text = "";
+                for (int i = 1; i < msgArgs.Length; i++)
+                    text += msgArgs[i] + " ";
+                if (version_checked == false)
+                {
+                    if (msgArgs[0] == ErrorCodes.Version_Success.ToString())
+                    {
+                        version_checked = true;
+                    }
+                    else if(msgArgs[0] == ErrorCodes.Error.ToString())
+                    {
+                        MessageBox.Show("PLEASE UPDATE YOUR CLIENT, YOUR USING AN OUTDATED VERSION CURRENT VERSION IS " + msgArgs[1]);
+                        Application.Exit();
+                    }
+                }
+                    if (loggedin == false)
+                {
+                    if (msgArgs[0] == ErrorCodes.Success.ToString())
+                    {
+                        loggedin = true;
+                    }
+                    else
+                    {
+                        MessageBox.Show(msgArgs[0]);
+                    }
+                }
+                if (msgArgs[0] == ProcessCodes.Kick.ToString())
+                {
+                    MessageBox.Show("Kicked: " + text);
+                    Application.Exit();
+                }
+                else if(msgArgs[0] == ProcessCodes.Ban.ToString())
+                {
+                    MessageBox.Show("BANNED: " + text);
+                    Application.Exit();
+                }
+                else if (msgArgs[0] == ProcessCodes.Reboot.ToString())
+                {
+                    MessageBox.Show("Reboot: " + text);
+                    Application.Exit();
+                }
+                else if (msgArgs[0] == ProcessCodes.Message.ToString())
+                {
+                    MessageBox.Show("Message: " + text);
+                }
+
                 Thread.Sleep(2);
             }
         }
@@ -60,24 +129,6 @@ namespace Legacy
             {
                 byte[] data = PacketWriter.sendString(Convert.ToString(0 + " " + Username_Textbox.Text + " " + Password_Textbox.Text));
                 client.Send(data);
-
-                byte[] recBuffer = new byte[1024];
-                int recSize = client.Receive(recBuffer);
-                byte[] recData = new byte[recSize];
-                Array.Copy(recBuffer, recData, recSize);
-                string msg = Encoding.ASCII.GetString(recData);
-                string[] msgArgs = msg.Split(' ');
-                //MessageBox.Show(msgArgs[0]);
-                MessageBox.Show(Encoding.ASCII.GetString(recData));
-                //ErrorCodes code = (ErrorCodes)UInt16.Parse(msgArgs[0]);
-                if (msgArgs[0] == ErrorCodes.Success.ToString())
-                {
-
-                    msgLoop.Start();
-                    Main_Form form = new Main_Form();
-                    form.Show();
-                    this.Hide();
-                }
             }
         }
 
@@ -104,6 +155,11 @@ namespace Legacy
                     this.Close();
                     Application.Exit();
                 }
+            }
+            if (client.Connected)
+            {
+                byte[] data = PacketWriter.sendString(Convert.ToString(6 + " " + version));
+                client.Send(data);
             }
         }
 

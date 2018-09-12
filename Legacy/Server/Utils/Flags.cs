@@ -7,6 +7,11 @@ public enum ProcessCodes : ushort
 {
     Login,
     Register,
+    Message,
+    Ban,
+    Kick,
+    Reboot,
+    Version,
     Fail
 }
 /// <summary>
@@ -20,5 +25,6 @@ public enum ErrorCodes : ushort
     Banned,
     TokenUsed,
     AlreadyLogged,
+    Version_Success,
     Error
 }

@@ -46,12 +46,21 @@ namespace Server
                 if(cmdArgs[0].ToLower() == "ban")
                 {
                     Login_Helper.BanUser(cmdArgs[1]);
+                    string msg = "";
+                    for (int i = 2; i < cmdArgs.Length; i++)
+                        msg += cmdArgs[i] + " ";
+                    server.BanUser(cmdArgs[1], msg);
+
                 }
 
                 else if (cmdArgs[0].ToLower() == "clear")
                 {
                     Console.Clear();
                     server.drawLogo();
+                }
+                else if (cmdArgs[0].ToLower() == "list")
+                {
+                    server.ListUsers();
                 }
                 else if (cmdArgs[0].ToLower() == "admins")
                 {
@@ -61,13 +70,30 @@ namespace Server
                 {
                     //
                 }
+                else if(cmdArgs[0].ToLower() == "reboot")
+                {
+                    server.RebootServer();
+                    Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("REBOOTING ALL CLIENTS");
+                    Console.ResetColor();
+                }
                 else if (cmdArgs[0].ToLower() == "unban")
                 {
-                    //unbans a user
+                    Login_Helper.UnBanUser(cmdArgs[1]);
                 }
                 else if (cmdArgs[0].ToLower() == "kick")
                 {
-                    //kick a user out of app
+                    string msg = "";
+                    for (int i = 2; i < cmdArgs.Length; i++)
+                        msg += cmdArgs[i] + " ";
+                    server.KickUser(cmdArgs[1], msg);
+                }
+                else if (cmdArgs[0].ToLower() == "send")
+                {
+                    string msg = "";
+                    for (int i = 2; i < cmdArgs.Length; i++)
+                        msg += cmdArgs[i] +" ";
+                    server.SendUserMsg(cmdArgs[1], msg);
                 }
             }
         }

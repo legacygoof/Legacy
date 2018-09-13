@@ -75,7 +75,7 @@ namespace Legacy
 
             if (true)
             {
-                MessageBox.Show("MOVEING");
+                
                 if (Math.Abs(difference.X) > 10)
                     mouse_event(0x1, Convert.ToInt32((dir.X * Math.Abs(difference.X)) / 20), 1, 0, 0);
                 if (Math.Abs(difference.Y) > 10)

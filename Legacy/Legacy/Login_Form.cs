@@ -97,7 +97,7 @@ namespace Legacy
                     }
                     else
                     {
-                        MessageBox.Show(msgArgs[0]);
+                        //MessageBox.Show(msgArgs[0]);
                     }
                 }
                 if (msgArgs[0] == ProcessCodes.Kick.ToString())

@@ -1,5 +1,6 @@
 ﻿using Emgu.CV;
 using Emgu.CV.Structure;
+using OverwatchHelper;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,8 +17,14 @@ namespace Legacy
         {
             
             Point target = Point.Empty;
+            //finding players
+            if (Input.KeyDown(Input.Keys.DOWN))
+            {
+                MessageBox.Show(image.Bitmap.GetPixel(150, 150).ToString());
+            }
+            
+            var gray = image.InRange(new Bgr(15, 0, 168), new Bgr(22, 0, 255));
 
-            var gray = image.InRange(new Bgr(19, 0, 255), new Bgr(19, 0, 255));
             gray = gray.SmoothBlur(5, 1);
 
             gray *= 10;

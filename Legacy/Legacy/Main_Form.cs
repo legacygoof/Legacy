@@ -124,7 +124,7 @@ namespace Legacy
             if (Input.KeyDown(Input.Keys.CAPSLOCK))
             {
                 Bitmap outlines = detector.Update(ref _Image, data);
-                outlineBox.Image = outlines;
+                //outlineBox.Image = outlines;
             }
             bot.Update(ref image, target, offset);
             frame = image.ToBitmap();
@@ -166,19 +166,7 @@ namespace Legacy
             }
         }
 
-        private void TrackBar1_Scroll(object sender, EventArgs e)
-        {
-            if (listBox1.SelectedIndex != -1)
-            {
-                data[listBox1.SelectedIndex] = trackBar1.Value;
-                textBox1.Text = data[listBox1.SelectedIndex].ToString();
-            }
-        }
 
-        private void ListBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            textBox1.Text = data[listBox1.SelectedIndex].ToString();
-        }
 
         private void FrameBox_MouseClick(object sender, MouseEventArgs e)
         {
@@ -197,6 +185,16 @@ namespace Legacy
                 ReleaseCapture();
                 SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
             }
+        }
+
+        private void pictureBox1_MouseHover(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Properties.Resources.ExitApp_Hover_Pic;
+        }
+
+        private void pictureBox1_MouseLeave(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Properties.Resources.ExitApp_Pic;
         }
     }
 }

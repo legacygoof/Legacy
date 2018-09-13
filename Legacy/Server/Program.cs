@@ -31,6 +31,7 @@ namespace Server
             cmdLoop.Start();
             server.Start();
             Login_Helper.InitializeDB();
+            Log.InitiateLog();
 
             //Console.ReadLine();
         }
@@ -50,17 +51,19 @@ namespace Server
                     for (int i = 2; i < cmdArgs.Length; i++)
                         msg += cmdArgs[i] + " ";
                     server.BanUser(cmdArgs[1], msg);
-
+                    Log.Warning("Server Issued Ban To " + cmdArgs[1]);
                 }
 
                 else if (cmdArgs[0].ToLower() == "clear")
                 {
+                    Log.Warning("Clear cmd Called");
                     Console.Clear();
                     server.drawLogo();
                 }
                 else if (cmdArgs[0].ToLower() == "list")
                 {
                     server.ListUsers();
+                    Log.Warning("List cmd Called");
                 }
                 else if (cmdArgs[0].ToLower() == "admins")
                 {
@@ -73,16 +76,17 @@ namespace Server
                 else if(cmdArgs[0].ToLower() == "reboot")
                 {
                     server.RebootServer();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine("REBOOTING ALL CLIENTS");
-                    Console.ResetColor();
+                    Log.Warning("SERVER CMD REBOOT CALLED");
                 }
                 else if (cmdArgs[0].ToLower() == "unban")
                 {
                     Login_Helper.UnBanUser(cmdArgs[1]);
+                    Log.Warning("Server Unbanned User " + cmdArgs[1]);
+
                 }
                 else if (cmdArgs[0].ToLower() == "kick")
                 {
+                    Log.Warning("Server Kicked User " + cmdArgs[1]);
                     string msg = "";
                     for (int i = 2; i < cmdArgs.Length; i++)
                         msg += cmdArgs[i] + " ";
@@ -90,6 +94,7 @@ namespace Server
                 }
                 else if (cmdArgs[0].ToLower() == "send")
                 {
+                    Log.Warning("Server Sent Message To User " + cmdArgs[1]);
                     string msg = "";
                     for (int i = 2; i < cmdArgs.Length; i++)
                         msg += cmdArgs[i] +" ";

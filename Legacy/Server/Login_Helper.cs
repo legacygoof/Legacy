@@ -34,17 +34,13 @@ namespace Server
                 if (reader.GetBoolean("LoggedIn"))
                 {
                     dbConn.Close();
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(username + " Attempted To Login But Was Already Logged In!");
-                    Console.ResetColor();
+                    Log.Warning(username + " Attempted To Login But Was Already Logged In!");
                     return ErrorCodes.AlreadyLogged;
                 }
                 if (reader.GetBoolean("Banned"))
                 {
                     dbConn.Close();
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(username + " Attempted To Login But Is Banned!");
-                    Console.ResetColor();
+                    Log.Error(username + " Attempted To Login But Is Banned!");
                     return ErrorCodes.Banned;
                 }
 
@@ -102,9 +98,7 @@ namespace Server
             dbConn.Open();
             cmd.ExecuteReader();
             dbConn.Close();
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(username + " Has Been Banned By Server!");
-            Console.ResetColor();
+            Log.Error(username + " Has Been Banned By Server!");
         }
 
         public static void UnBanUser(string username)
@@ -118,9 +112,7 @@ namespace Server
             dbConn.Open();
             cmd.ExecuteReader();
             dbConn.Close();
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine(username + " Has Been Unbanned By Server!");
-            Console.ResetColor();
+            Log.Success(username + " Has Been Unbanned By Server!");
         }
 
         public static ErrorCodes doRegister(string email, string username, string password)
@@ -141,9 +133,7 @@ namespace Server
             string connString = builder.ToString();
 
             dbConn = new MySqlConnection(connString);
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("DB Intialized");
-            Console.ResetColor();
+            Log.Warning("DB Intialized");
         }
     }
 }

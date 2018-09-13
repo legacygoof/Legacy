@@ -26,7 +26,7 @@ namespace Legacy
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread msgLoop;
         public bool loggedin = false;
-        private static string version = "1.1";
+        private static string version = "1.0";
         private static bool version_checked = false;
         
 

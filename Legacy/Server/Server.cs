@@ -20,14 +20,14 @@ namespace Server
         public void Start()
         {
             drawLogo();
-            Console.WriteLine("Starting Server...");
+            Log.Write("Starting Server...");
             server.Bind(new IPEndPoint(IPAddress.Any, 1234));
             server.Listen(5);
-            Console.WriteLine("Started!");
+            Log.Write("Started!");
             Thread.Sleep(2000);
             Console.Clear();
             drawLogo();
-            Console.WriteLine("Listening on port " + 1234 + "\nWaiting for clients");
+            Log.Write("Listening on port " + 1234 + "\nWaiting for clients");
 
             server.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -36,12 +36,14 @@ namespace Server
 
         public void ListUsers()
         {
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine("Users Online: " + userList.Count);//////////////////////////
             Console.WriteLine("-----------------------------|-------------------------------");
             foreach(Users u in userList)
             {
                 Console.WriteLine(u.Name + "                            " + u.IP);
             }
+            Console.ResetColor();
         }
 
         public void KickUser(string username, string message)
@@ -96,9 +98,7 @@ namespace Server
                 return;
             }
             userList.Add(new Users(socket.RemoteEndPoint.ToString(), socket));
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Client Connected!");
-            Console.ResetColor();
+            Log.Success("Client Connected!");
             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
             server.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -121,9 +121,7 @@ namespace Server
                 Users user = userList.Find(i => i.IP == socket.RemoteEndPoint.ToString());
                 if (user.Name != null && user.Name != "")
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Received msg from " + user.Name);
-                    Console.ResetColor();
+                    Log.Success("Received msg from " + user.Name);
                 }
                 dataBuff = new byte[received];
                 Array.Copy(g_buffer, dataBuff, received);
@@ -135,16 +133,12 @@ namespace Server
                 Users user = userList.Find(i => i.IP == socket.RemoteEndPoint.ToString());
                 if (user.Name != null && user.Name != "")
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine(user.Name + " Has Forcefully Disconnected!");
-                    Console.ResetColor();
+                    Log.Warning(user.Name + " Has Forcefully Disconnected!");
                     Login_Helper.UpdateUser(user.Name);
                 }
                 else
                 {
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Random Client Has Forcefully Disconnected! "+ socket.RemoteEndPoint.ToString());
-                    Console.ResetColor();
+                    Log.Error("Random Client Has Forcefully Disconnected! "+ socket.RemoteEndPoint.ToString());
                 }
 
                     var ItemToRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
@@ -163,63 +157,36 @@ namespace Server
             {
                 var toRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
                 userList.Remove(toRemove);
-                Console.ForegroundColor = ConsoleColor.Red;
-                Console.WriteLine("Error connecting user, possibly malicaious "  + socket.RemoteEndPoint);
-                Console.ResetColor();
+                Log.Error("Error connecting user, possibly malicaious "  + socket.RemoteEndPoint);
                 return;
             }
             
              switch (code)//first item is always code
              {
                  case ProcessCodes.Login: {
-                        //ProcessLogin(msg,ar);
                         ErrorCodes tempCode = Login_Helper.doLogin(msg[1], msg[2]);
                         byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(tempCode));
                         if(tempCode == ErrorCodes.Success)
                         {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine(msg[1] + " Has Logged In!");
-                            Console.ResetColor();
+                            Log.Success(msg[1] + " Has Logged In!");
                             userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
                             IPEndPoint ipAdd = socket.RemoteEndPoint as IPEndPoint;
                             Login_Helper.UpdateUser(ipAdd.ToString(),msg[1],1);
                         }
                         socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                         socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
-                        //Console.WriteLine(Convert.ToString(tempCode));
-                        /*if (Login_Helper.doLogin(msg[1], msg[2]) == ErrorCodes.Success)
-                        {
-                            userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
-                            Console.WriteLine("User " + msg[1] + " Has logged in ");
-                            byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Success));//success error code
-                            IPEndPoint ipAdd = socket.RemoteEndPoint as IPEndPoint;
-                            Login_Helper.UpdateUser(ipAdd.ToString());
-                            socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-                            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
-                        }
-                        else
-                        {
-                            byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.InvalidLogin));//success error code
-                            socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-                            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
-                        }*/
                     } break;
                  case ProcessCodes.Version: {
-                        Console.WriteLine(text);
                         if(clientVersion.Equals(msg[1]))
                         {
-                            Console.ForegroundColor = ConsoleColor.Green;
-                            Console.WriteLine("Client versions matched, cleared for login");
-                            Console.ResetColor();
+                            Log.Success("Client versions matched, cleared for login");
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Version_Success.ToString()));
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
                         }
                         else
                         {
-                            Console.ForegroundColor = ConsoleColor.Red;
-                            Console.WriteLine("Client versions do match closing client");
-                            Console.ResetColor();
+                            Log.Warning("Client versions do match closing client");
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Error.ToString()) + " "+clientVersion);
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);

@@ -67,60 +67,63 @@ namespace Legacy
         {
             while (true)
             {
-                byte[] buffer = new byte[1024];
-                int rec = client.Receive(buffer);
-                byte[] data = new byte[rec];
-
-                Array.Copy(buffer, data, rec);
-                string msg = Encoding.ASCII.GetString(data);
-                string[] msgArgs = msg.Split(' ');
-                string text = "";
-                for (int i = 1; i < msgArgs.Length; i++)
-                    text += msgArgs[i] + " ";
-                if (version_checked == false)
+                if (client.Connected)
                 {
-                    if (msgArgs[0] == ErrorCodes.Version_Success.ToString())
+                    byte[] buffer = new byte[1024];
+                    int rec = client.Receive(buffer);
+                    byte[] data = new byte[rec];
+
+                    Array.Copy(buffer, data, rec);
+                    string msg = Encoding.ASCII.GetString(data);
+                    string[] msgArgs = msg.Split(' ');
+                    string text = "";
+                    for (int i = 1; i < msgArgs.Length; i++)
+                        text += msgArgs[i] + " ";
+                    if (version_checked == false)
                     {
-                        version_checked = true;
+                        if (msgArgs[0] == ErrorCodes.Version_Success.ToString())
+                        {
+                            version_checked = true;
+                        }
+                        else if (msgArgs[0] == ErrorCodes.Error.ToString())
+                        {
+                            MessageBox.Show("PLEASE UPDATE YOUR CLIENT, YOUR USING AN OUTDATED VERSION CURRENT VERSION IS " + msgArgs[1]);
+                            Application.Exit();
+                        }
                     }
-                    else if(msgArgs[0] == ErrorCodes.Error.ToString())
+                    if (loggedin == false)
                     {
-                        MessageBox.Show("PLEASE UPDATE YOUR CLIENT, YOUR USING AN OUTDATED VERSION CURRENT VERSION IS " + msgArgs[1]);
+                        if (msgArgs[0] == ErrorCodes.Success.ToString())
+                        {
+                            loggedin = true;
+                        }
+                        else
+                        {
+                            //MessageBox.Show(msgArgs[0]);
+                        }
+                    }
+                    if (msgArgs[0] == ProcessCodes.Kick.ToString())
+                    {
+                        MessageBox.Show("Kicked: " + text);
                         Application.Exit();
                     }
-                }
-                    if (loggedin == false)
-                {
-                    if (msgArgs[0] == ErrorCodes.Success.ToString())
+                    else if (msgArgs[0] == ProcessCodes.Ban.ToString())
                     {
-                        loggedin = true;
+                        MessageBox.Show("BANNED: " + text);
+                        Application.Exit();
                     }
-                    else
+                    else if (msgArgs[0] == ProcessCodes.Reboot.ToString())
                     {
-                        //MessageBox.Show(msgArgs[0]);
+                        MessageBox.Show("Reboot: " + text);
+                        Application.Exit();
                     }
-                }
-                if (msgArgs[0] == ProcessCodes.Kick.ToString())
-                {
-                    MessageBox.Show("Kicked: " + text);
-                    Application.Exit();
-                }
-                else if(msgArgs[0] == ProcessCodes.Ban.ToString())
-                {
-                    MessageBox.Show("BANNED: " + text);
-                    Application.Exit();
-                }
-                else if (msgArgs[0] == ProcessCodes.Reboot.ToString())
-                {
-                    MessageBox.Show("Reboot: " + text);
-                    Application.Exit();
-                }
-                else if (msgArgs[0] == ProcessCodes.Message.ToString())
-                {
-                    MessageBox.Show("Message: " + text);
-                }
+                    else if (msgArgs[0] == ProcessCodes.Message.ToString())
+                    {
+                        MessageBox.Show("Message: " + text);
+                    }
 
-                Thread.Sleep(2);
+                    Thread.Sleep(2);
+                }
             }
         }
         private void Login()
@@ -147,15 +150,20 @@ namespace Legacy
                 {
                     //we'll change the ip to an md5 encryption so login server doesnt get ddosed
                     client.Connect(IPAddress.Parse("192.168.1.209"), 1234);//IPAddress.Loopback, 1234);
+                    return;
                 }
                 //here we catch an error and can do whatever we want to it, we'll probs close the program for security
                 catch (SocketException ex)
                 {
-                    MessageBox.Show("Unable to connect to server\nError: " + ex);
-                    this.Close();
-                    Application.Exit();
+                    DialogResult dialogResult = MessageBox.Show("Unable to connect to server, check your connection\nPress retry to try again or cancel to exit", "Unable To Connect", MessageBoxButtons.RetryCancel);
+                    if (dialogResult == DialogResult.Cancel)
+                    {
+                        break;
+                    }
+                    
                 }
             }
+            Application.Exit();
             if (client.Connected)
             {
                 byte[] data = PacketWriter.sendString(Convert.ToString(6 + " " + version));

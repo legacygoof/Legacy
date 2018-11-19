@@ -36,7 +36,7 @@ namespace Server
             //Console.ReadLine();
         }
 
-
+       
         private static void CommandLoop()
         {
             while(true)
@@ -44,7 +44,7 @@ namespace Server
                 string cmd = Console.ReadLine();
                 string[] cmdArgs = cmd.Split(' ');
 
-                if(cmdArgs[0].ToLower() == "ban")
+                if(cmdArgs[0].ToLower() == "ban" && cmdArgs.Length >= 1)
                 {
                     Login_Helper.BanUser(cmdArgs[1]);
                     string msg = "";
@@ -69,7 +69,7 @@ namespace Server
                 {
                     //lists all admins online currently
                 }
-                else if (cmdArgs[0].ToLower() == "give")
+                else if (cmdArgs[0].ToLower() == "give" && cmdArgs.Length >= 1)
                 {
                     //
                 }
@@ -78,13 +78,13 @@ namespace Server
                     server.RebootServer();
                     Log.Warning("SERVER CMD REBOOT CALLED");
                 }
-                else if (cmdArgs[0].ToLower() == "unban")
+                else if (cmdArgs[0].ToLower() == "unban" && cmdArgs.Length >= 1)
                 {
                     Login_Helper.UnBanUser(cmdArgs[1]);
                     Log.Warning("Server Unbanned User " + cmdArgs[1]);
 
                 }
-                else if (cmdArgs[0].ToLower() == "kick")
+                else if (cmdArgs[0].ToLower() == "kick" && cmdArgs.Length >= 2)
                 {
                     Log.Warning("Server Kicked User " + cmdArgs[1]);
                     string msg = "";
@@ -92,7 +92,7 @@ namespace Server
                         msg += cmdArgs[i] + " ";
                     server.KickUser(cmdArgs[1], msg);
                 }
-                else if (cmdArgs[0].ToLower() == "send")
+                else if (cmdArgs[0].ToLower() == "send" && cmdArgs.Length >= 2)
                 {
                     Log.Warning("Server Sent Message To User " + cmdArgs[1]);
                     string msg = "";

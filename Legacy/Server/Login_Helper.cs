@@ -23,55 +23,71 @@ namespace Server
         public static ErrorCodes doLogin(string username, string password)
         {
             ErrorCodes code;
+            try
+            {
                 string query = "SELECT * FROM users WHERE Username ='" + username + "' AND Password ='" + password + "'";
                 MySqlCommand cmd = new MySqlCommand(query, dbConn);
                 dbConn.Open();
 
                 MySqlDataReader reader = cmd.ExecuteReader();
-            if (reader.HasRows)
-            {
-                reader.Read();
-                if (reader.GetBoolean("LoggedIn"))
+                if (reader.HasRows)
                 {
-                    dbConn.Close();
-                    Log.Warning(username + " Attempted To Login But Was Already Logged In!");
-                    return ErrorCodes.AlreadyLogged;
+                    reader.Read();
+                    if (reader.GetBoolean("LoggedIn"))
+                    {
+                        dbConn.Close();
+                        Log.Warning(username + " Attempted To Login But Was Already Logged In!");
+                        return ErrorCodes.AlreadyLogged;
+                    }
+                    if (reader.GetBoolean("Banned"))
+                    {
+                        dbConn.Close();
+                        Log.Error(username + " Attempted To Login But Is Banned!");
+                        return ErrorCodes.Banned;
+                    }
+
+                    else
+                    {
+                        dbConn.Close();
+                        return ErrorCodes.Success;
+                    }
                 }
-                if (reader.GetBoolean("Banned"))
-                {
-                    dbConn.Close();
-                    Log.Error(username + " Attempted To Login But Is Banned!");
-                    return ErrorCodes.Banned;
-                }
+
 
                 else
                 {
                     dbConn.Close();
-                    return ErrorCodes.Success;
+                    Log.Warning("Someone typed in the wrong info for user: " + username);
+                    return ErrorCodes.InvalidLogin;
                 }
             }
-
-
-            else
+            catch (MySqlException ex)
             {
-                dbConn.Close();
-                return ErrorCodes.InvalidLogin;
+
+                return ErrorCodes.Error;
             }
-            
+
         }
         //set user to logged in and update ip
         public static void UpdateUser(string ip, string username, int type)
         {
-            string query = "UPDATE Users SET IP=@ip,LoggedIn=@logged Where Username=@uname";
-            MySqlCommand cmd = new MySqlCommand();
-            cmd.CommandText = query;
-            cmd.Parameters.AddWithValue("@ip", ip);
-            cmd.Parameters.AddWithValue("@logged", Convert.ToBoolean(true));
-            cmd.Parameters.AddWithValue("@uname", username);
-            cmd.Connection = dbConn;
-            dbConn.Open();
-            cmd.ExecuteReader();
-            dbConn.Close();
+            try
+            {
+                string query = "UPDATE Users SET IP=@ip,LoggedIn=@logged Where Username=@uname";
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.CommandText = query;
+                cmd.Parameters.AddWithValue("@ip", ip);
+                cmd.Parameters.AddWithValue("@logged", Convert.ToBoolean(true));
+                cmd.Parameters.AddWithValue("@uname", username);
+                cmd.Connection = dbConn;
+                dbConn.Open();
+                cmd.ExecuteReader();
+                dbConn.Close();
+            }
+            catch(MySqlException ex)
+            {
+
+            }
         }
         //when user logs out, overloaded method cause lazy :p
         public static void UpdateUser(string username)
@@ -133,7 +149,17 @@ namespace Server
             string connString = builder.ToString();
 
             dbConn = new MySqlConnection(connString);
-            Log.Warning("DB Intialized");
+            
+            try
+            {
+                dbConn.Open();
+                dbConn.Close();
+                Log.Warning("DB Intialized");
+            }
+            catch(MySqlException)
+            {
+                Log.Error("DB Failed to initialize");
+            }
         }
     }
 }

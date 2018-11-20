@@ -12,7 +12,9 @@ public enum ProcessCodes : ushort
     Kick,
     Reboot,
     Version,
+    Logger,
     Fail
+
 }
 /// <summary>
 /// codes we send back to user

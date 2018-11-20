@@ -23,10 +23,11 @@ namespace Legacy_Admin
         [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
         public static extern bool ReleaseCapture();
 
+        public List<string> serverLog = new List<string>();
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread msgLoop;
         public bool loggedin = false;
-        private static string version = "1.0";
+        private static string version = "Admin_1.01";
         private static bool version_checked = false;
 
 
@@ -50,7 +51,7 @@ namespace Legacy_Admin
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Main_Form form = new Main_Form();
+            Main_Form form = new Main_Form(serverLog);
             form.Show();
             this.Hide();
         }
@@ -67,6 +68,7 @@ namespace Legacy_Admin
         {
             while (true)
             {
+                
                 if (client.Connected)
                 {
                     byte[] buffer = new byte[1024];
@@ -99,7 +101,7 @@ namespace Legacy_Admin
                         }
                         else
                         {
-                            //MessageBox.Show(msgArgs[0]);
+                            MessageBox.Show(msgArgs[0]);
                         }
                     }
                     if (msgArgs[0] == ProcessCodes.Kick.ToString())
@@ -107,6 +109,27 @@ namespace Legacy_Admin
                         MessageBox.Show("Kicked: " + text);
                         Application.Exit();
                     }
+                    else if (msgArgs[0] == ProcessCodes.Ban.ToString())
+                    {
+                        MessageBox.Show("BANNED: " + text);
+                        Application.Exit();
+                    }
+                    else if (msgArgs[0] == ProcessCodes.Reboot.ToString())
+                    {
+                        MessageBox.Show("Reboot: " + text);
+                        Application.Exit();
+                    }
+                    else if (msgArgs[0] == ProcessCodes.Message.ToString())
+                    {
+                        MessageBox.Show("Message: " + text);
+                    }
+
+                    if(msgArgs[0] == ProcessCodes.Logger.ToString())
+                    {
+                        serverLog.Add(text);
+                    }
+                    
+                    Thread.Sleep(2);
 
                     Thread.Sleep(2);
                 }

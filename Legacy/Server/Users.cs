@@ -22,4 +22,17 @@ namespace Server
             this.clientSocket = clientSocket;
         }
     }
+
+    class Admins
+    {
+        public Socket clientSocket { get; set; }
+        public string Name { get; set; }
+        public string IP { get; set; }
+
+        public Admins(string IP, Socket clientSocket)
+        {
+            this.IP = IP;
+            this.clientSocket = clientSocket;
+        }
+    }
 }

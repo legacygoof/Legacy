@@ -137,6 +137,23 @@ namespace Server
             return ErrorCodes.Exists;
         }
 
+        public static bool checkAdmin(string username)
+        {
+            string query = "SELECT * FROM users WHERE Username ='" + username + "' AND admin ='1'";
+            MySqlCommand cmd = new MySqlCommand(query, dbConn);
+            dbConn.Open();
+
+            MySqlDataReader reader = cmd.ExecuteReader();
+            if (reader.HasRows)
+            {
+                Log.AdminConnect("Admin " + username + " Has Connected!");
+                dbConn.Close();
+                return true;
+            }
+            dbConn.Close();
+            return false;
+        }
+
         public static void InitializeDB()
         {
             MySqlConnectionStringBuilder builder = new MySqlConnectionStringBuilder();

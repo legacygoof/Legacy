@@ -15,6 +15,13 @@ namespace Server
         {
             
         }
+        public static void AdminConnect(string msg)
+        {
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine(msg);
+            Console.ResetColor();
+            Logger(msg);
+        }
         public static void Success(string msg)
         {
             Console.ForegroundColor = ConsoleColor.Green;

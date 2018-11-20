@@ -11,10 +11,12 @@ namespace Server
     class Server
     {
         public string clientVersion = "1.0";
+        public string adminVersion = "admin_1.0";
         public bool connectionsOpen = true;
         private byte[] g_buffer = new byte[1024];
         Socket server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         List<Users> userList = new List<Users>();
+        List<Admins> adminList = new List<Admins>();
         //List<Socket> clientSockets = new List<Socket>();
 
         public void Start()
@@ -44,6 +46,20 @@ namespace Server
                 Console.WriteLine(u.Name + "                            " + u.IP);
             }
             Console.ResetColor();
+        }
+
+        public void sendAdminsLog(string message)
+        {
+            string msg = ProcessCodes.Logger.ToString() + " " + message;
+            foreach(Admins a in adminList)
+            {
+                if (userList.Find(i => i.IP == a.IP).IP != "" || userList.Find(i => i.IP == a.IP).IP != null)
+                {
+                    Socket socket = a.clientSocket;
+                    byte[] data = Encoding.ASCII.GetBytes(msg);
+                    socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
+                }
+            }
         }
 
         public void KickUser(string username, string message)
@@ -99,6 +115,7 @@ namespace Server
             }
             userList.Add(new Users(socket.RemoteEndPoint.ToString(), socket));
             Log.Success("Client Connected!");
+            sendAdminsLog("Client Connected!");
             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
             server.BeginAccept(new AsyncCallback(AcceptCallback), null);
         }
@@ -122,6 +139,7 @@ namespace Server
                 if (user.Name != null && user.Name != "")
                 {
                     Log.Success("Received msg from " + user.Name);
+                    sendAdminsLog("Received msg from " + user.Name);
                 }
                 dataBuff = new byte[received];
                 Array.Copy(g_buffer, dataBuff, received);
@@ -133,18 +151,21 @@ namespace Server
                 Users user = userList.Find(i => i.IP == socket.RemoteEndPoint.ToString());
                 if (user.Name != null && user.Name != "")
                 {
+
                     Log.Warning(user.Name + " Has Forcefully Disconnected!");
+                    sendAdminsLog(user.Name + " Has Forcefully Disconnected!");
                     Login_Helper.UpdateUser(user.Name);
                 }
                 else
                 {
                     Log.Error("Random Client Has Forcefully Disconnected! "+ socket.RemoteEndPoint.ToString());
+                    sendAdminsLog("Random Client Has Forcefully Disconnected! " + socket.RemoteEndPoint.ToString());
                 }
 
                     var ItemToRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
                 socket.Close();
                 //clientSockets.Remove(socket);
-                userList.Remove(ItemToRemove);
+                    userList.Remove(ItemToRemove);
                 return;
             }
             //incase the code given is not an actual code so we dont run into formatting problems and the server crashes
@@ -156,8 +177,9 @@ namespace Server
             catch(System.FormatException e)
             {
                 var toRemove = userList.Single(i => i.IP == socket.RemoteEndPoint.ToString());
-                userList.Remove(toRemove);
+                    userList.Remove(toRemove);
                 Log.Error("Error connecting user, possibly malicaious "  + socket.RemoteEndPoint);
+                sendAdminsLog("Error connecting user, possibly malicaious " + socket.RemoteEndPoint);
                 return;
             }
             
@@ -169,7 +191,14 @@ namespace Server
                         if(tempCode == ErrorCodes.Success)
                         {
                             Log.Success(msg[1] + " Has Logged In!");
-                            userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
+                            sendAdminsLog(msg[1] + " Has Logged In!");
+                            if(Login_Helper.checkAdmin(msg[1]))
+                            {
+                                adminList.Add(new Admins(userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).IP, userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).clientSocket));
+                                adminList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
+                            }
+                                userList.Find(i => i.IP == socket.RemoteEndPoint.ToString()).Name = msg[1];
+                            
                             IPEndPoint ipAdd = socket.RemoteEndPoint as IPEndPoint;
                             Login_Helper.UpdateUser(ipAdd.ToString(),msg[1],1);
                         }
@@ -180,6 +209,7 @@ namespace Server
                         if(clientVersion.Equals(msg[1]))
                         {
                             Log.Success("Client versions matched, cleared for login");
+                            sendAdminsLog("Client versions matched, cleared for login");
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Version_Success.ToString()));
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
@@ -187,6 +217,7 @@ namespace Server
                         else
                         {
                             Log.Warning("Client versions do match closing client");
+                            sendAdminsLog("Client versions do match closing client");
                             byte[] data = Encoding.ASCII.GetBytes(Convert.ToString(ErrorCodes.Error.ToString()) + " "+clientVersion);
                             socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);

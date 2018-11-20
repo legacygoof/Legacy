@@ -16,7 +16,7 @@ namespace Legacy_Admin
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Main_Form());
+            Application.Run(new Login_Form());
         }
     }
 }

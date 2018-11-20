@@ -11,7 +11,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Legacy
+namespace Legacy_Admin
 {
     public partial class Login_Form : Form
     {
@@ -107,20 +107,6 @@ namespace Legacy
                         MessageBox.Show("Kicked: " + text);
                         Application.Exit();
                     }
-                    else if (msgArgs[0] == ProcessCodes.Ban.ToString())
-                    {
-                        MessageBox.Show("BANNED: " + text);
-                        Application.Exit();
-                    }
-                    else if (msgArgs[0] == ProcessCodes.Reboot.ToString())
-                    {
-                        MessageBox.Show("Reboot: " + text);
-                        Application.Exit();
-                    }
-                    else if (msgArgs[0] == ProcessCodes.Message.ToString())
-                    {
-                        MessageBox.Show("Message: " + text);
-                    }
 
                     Thread.Sleep(2);
                 }
@@ -202,6 +188,11 @@ namespace Legacy
         }
 
         private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void pictureBox2_Click(object sender, EventArgs e)
         {
 
         }

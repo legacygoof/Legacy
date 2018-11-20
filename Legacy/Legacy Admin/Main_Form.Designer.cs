@@ -28,18 +28,18 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.ConnectedClientsGrid = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.label3 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.button6 = new System.Windows.Forms.Button();
+            this.dbClientsRefresh_Button = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
+            this.DatabaseClientsGrid = new System.Windows.Forms.DataGridView();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -52,11 +52,11 @@
             this.button10 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.dataGridView3 = new System.Windows.Forms.DataGridView();
+            this.TokensGrid = new System.Windows.Forms.DataGridView();
             this.numericUpDown3 = new System.Windows.Forms.NumericUpDown();
             this.label2 = new System.Windows.Forms.Label();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.button16 = new System.Windows.Forms.Button();
+            this.TokensRefresh_Button = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.button8 = new System.Windows.Forms.Button();
@@ -66,27 +66,35 @@
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label1 = new System.Windows.Forms.Label();
             this.button17 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.button6 = new System.Windows.Forms.Button();
+            this.button16 = new System.Windows.Forms.Button();
+            this.textBox3 = new System.Windows.Forms.TextBox();
+            this.button18 = new System.Windows.Forms.Button();
+            this.button19 = new System.Windows.Forms.Button();
+            this.button20 = new System.Windows.Forms.Button();
+            this.button21 = new System.Windows.Forms.Button();
+            this.button22 = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.ConnectedClientsGrid)).BeginInit();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DatabaseClientsGrid)).BeginInit();
             this.tabPage3.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TokensGrid)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
             this.SuspendLayout();
             // 
-            // dataGridView1
+            // ConnectedClientsGrid
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(6, 25);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(805, 153);
-            this.dataGridView1.TabIndex = 0;
+            this.ConnectedClientsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.ConnectedClientsGrid.Location = new System.Drawing.Point(6, 25);
+            this.ConnectedClientsGrid.Name = "ConnectedClientsGrid";
+            this.ConnectedClientsGrid.Size = new System.Drawing.Size(805, 203);
+            this.ConnectedClientsGrid.TabIndex = 0;
             // 
             // tabControl1
             // 
@@ -96,17 +104,24 @@
             this.tabControl1.Location = new System.Drawing.Point(13, 13);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(838, 392);
+            this.tabControl1.Size = new System.Drawing.Size(992, 392);
             this.tabControl1.TabIndex = 1;
             // 
             // tabPage1
             // 
+            this.tabPage1.Controls.Add(this.button20);
+            this.tabPage1.Controls.Add(this.button19);
+            this.tabPage1.Controls.Add(this.button21);
+            this.tabPage1.Controls.Add(this.button18);
+            this.tabPage1.Controls.Add(this.textBox3);
+            this.tabPage1.Controls.Add(this.button16);
+            this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.dataGridView1);
+            this.tabPage1.Controls.Add(this.ConnectedClientsGrid);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage1.Size = new System.Drawing.Size(830, 366);
+            this.tabPage1.Size = new System.Drawing.Size(1057, 366);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Server";
             this.tabPage1.UseVisualStyleBackColor = true;
@@ -122,93 +137,97 @@
             // 
             // tabPage2
             // 
-            this.tabPage2.Controls.Add(this.button6);
+            this.tabPage2.Controls.Add(this.dbClientsRefresh_Button);
+            this.tabPage2.Controls.Add(this.button22);
             this.tabPage2.Controls.Add(this.button5);
             this.tabPage2.Controls.Add(this.button4);
             this.tabPage2.Controls.Add(this.button3);
             this.tabPage2.Controls.Add(this.button2);
             this.tabPage2.Controls.Add(this.button1);
-            this.tabPage2.Controls.Add(this.dataGridView2);
+            this.tabPage2.Controls.Add(this.DatabaseClientsGrid);
             this.tabPage2.Location = new System.Drawing.Point(4, 22);
             this.tabPage2.Name = "tabPage2";
             this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(830, 366);
+            this.tabPage2.Size = new System.Drawing.Size(984, 366);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manage Clients";
             this.tabPage2.UseVisualStyleBackColor = true;
             // 
-            // button6
+            // dbClientsRefresh_Button
             // 
-            this.button6.Location = new System.Drawing.Point(6, 205);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(818, 28);
-            this.button6.TabIndex = 1;
-            this.button6.Text = "Refresh";
-            this.button6.UseVisualStyleBackColor = true;
+            this.dbClientsRefresh_Button.Location = new System.Drawing.Point(6, 205);
+            this.dbClientsRefresh_Button.Name = "dbClientsRefresh_Button";
+            this.dbClientsRefresh_Button.Size = new System.Drawing.Size(946, 59);
+            this.dbClientsRefresh_Button.TabIndex = 1;
+            this.dbClientsRefresh_Button.Text = "Refresh";
+            this.dbClientsRefresh_Button.UseVisualStyleBackColor = true;
+            this.dbClientsRefresh_Button.Click += new System.EventHandler(this.dbClientsRefresh_Button_Click);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(338, 236);
+            this.button5.Location = new System.Drawing.Point(554, 324);
             this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(160, 41);
+            this.button5.Size = new System.Drawing.Size(131, 34);
             this.button5.TabIndex = 1;
             this.button5.Text = "Set All Logged Out";
             this.button5.UseVisualStyleBackColor = true;
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(172, 236);
+            this.button4.Location = new System.Drawing.Point(417, 324);
             this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(160, 41);
+            this.button4.Size = new System.Drawing.Size(131, 34);
             this.button4.TabIndex = 1;
             this.button4.Text = "Set All Logged In";
             this.button4.UseVisualStyleBackColor = true;
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(6, 283);
+            this.button3.Location = new System.Drawing.Point(143, 324);
             this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(160, 41);
+            this.button3.Size = new System.Drawing.Size(131, 34);
             this.button3.TabIndex = 1;
             this.button3.Text = "Unban All";
             this.button3.UseVisualStyleBackColor = true;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(172, 283);
+            this.button2.Location = new System.Drawing.Point(6, 324);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(160, 41);
+            this.button2.Size = new System.Drawing.Size(131, 34);
             this.button2.TabIndex = 1;
             this.button2.Text = "Ban All";
             this.button2.UseVisualStyleBackColor = true;
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(6, 236);
+            this.button1.Location = new System.Drawing.Point(280, 324);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(160, 41);
+            this.button1.Size = new System.Drawing.Size(131, 34);
             this.button1.TabIndex = 1;
             this.button1.Text = "Give All Time";
             this.button1.UseVisualStyleBackColor = true;
             // 
-            // dataGridView2
+            // DatabaseClientsGrid
             // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(6, 6);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(818, 193);
-            this.dataGridView2.TabIndex = 0;
+            this.DatabaseClientsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.DatabaseClientsGrid.Location = new System.Drawing.Point(6, 6);
+            this.DatabaseClientsGrid.Name = "DatabaseClientsGrid";
+            this.DatabaseClientsGrid.Size = new System.Drawing.Size(946, 193);
+            this.DatabaseClientsGrid.TabIndex = 0;
+            this.DatabaseClientsGrid.CellEndEdit += new System.Windows.Forms.DataGridViewCellEventHandler(this.DatabaseClientsGrid_CellEndEdit);
             // 
             // tabPage3
             // 
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Controls.Add(this.textBox2);
             this.tabPage3.Controls.Add(this.textBox1);
-            this.tabPage3.Controls.Add(this.dataGridView3);
+            this.tabPage3.Controls.Add(this.TokensGrid);
             this.tabPage3.Controls.Add(this.numericUpDown3);
             this.tabPage3.Controls.Add(this.label2);
             this.tabPage3.Controls.Add(this.numericUpDown2);
-            this.tabPage3.Controls.Add(this.button16);
+            this.tabPage3.Controls.Add(this.TokensRefresh_Button);
             this.tabPage3.Controls.Add(this.button7);
             this.tabPage3.Controls.Add(this.label5);
             this.tabPage3.Controls.Add(this.button8);
@@ -217,7 +236,7 @@
             this.tabPage3.Controls.Add(this.numericUpDown1);
             this.tabPage3.Location = new System.Drawing.Point(4, 22);
             this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(830, 366);
+            this.tabPage3.Size = new System.Drawing.Size(984, 366);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Mange Tokens";
             this.tabPage3.UseVisualStyleBackColor = true;
@@ -232,7 +251,7 @@
             this.groupBox1.Controls.Add(this.button14);
             this.groupBox1.Controls.Add(this.button13);
             this.groupBox1.Controls.Add(this.button10);
-            this.groupBox1.Location = new System.Drawing.Point(554, 118);
+            this.groupBox1.Location = new System.Drawing.Point(756, 113);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(225, 193);
             this.groupBox1.TabIndex = 8;
@@ -311,29 +330,29 @@
             // 
             // textBox2
             // 
-            this.textBox2.Location = new System.Drawing.Point(281, 310);
+            this.textBox2.Location = new System.Drawing.Point(478, 303);
             this.textBox2.Name = "textBox2";
             this.textBox2.Size = new System.Drawing.Size(271, 20);
             this.textBox2.TabIndex = 7;
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(4, 310);
+            this.textBox1.Location = new System.Drawing.Point(4, 305);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(271, 20);
             this.textBox1.TabIndex = 7;
             // 
-            // dataGridView3
+            // TokensGrid
             // 
-            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Location = new System.Drawing.Point(4, 4);
-            this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.Size = new System.Drawing.Size(543, 215);
-            this.dataGridView3.TabIndex = 0;
+            this.TokensGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.TokensGrid.Location = new System.Drawing.Point(4, 4);
+            this.TokensGrid.Name = "TokensGrid";
+            this.TokensGrid.Size = new System.Drawing.Size(745, 215);
+            this.TokensGrid.TabIndex = 0;
             // 
             // numericUpDown3
             // 
-            this.numericUpDown3.Location = new System.Drawing.Point(597, 58);
+            this.numericUpDown3.Location = new System.Drawing.Point(799, 53);
             this.numericUpDown3.Name = "numericUpDown3";
             this.numericUpDown3.Size = new System.Drawing.Size(46, 20);
             this.numericUpDown3.TabIndex = 6;
@@ -341,7 +360,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(553, 9);
+            this.label2.Location = new System.Drawing.Point(755, 4);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(34, 13);
             this.label2.TabIndex = 3;
@@ -349,25 +368,26 @@
             // 
             // numericUpDown2
             // 
-            this.numericUpDown2.Location = new System.Drawing.Point(597, 33);
+            this.numericUpDown2.Location = new System.Drawing.Point(799, 28);
             this.numericUpDown2.Name = "numericUpDown2";
             this.numericUpDown2.Size = new System.Drawing.Size(46, 20);
             this.numericUpDown2.TabIndex = 6;
             // 
-            // button16
+            // TokensRefresh_Button
             // 
-            this.button16.Location = new System.Drawing.Point(4, 221);
-            this.button16.Name = "button16";
-            this.button16.Size = new System.Drawing.Size(544, 76);
-            this.button16.TabIndex = 5;
-            this.button16.Text = "Refresh";
-            this.button16.UseVisualStyleBackColor = true;
+            this.TokensRefresh_Button.Location = new System.Drawing.Point(4, 221);
+            this.TokensRefresh_Button.Name = "TokensRefresh_Button";
+            this.TokensRefresh_Button.Size = new System.Drawing.Size(745, 76);
+            this.TokensRefresh_Button.TabIndex = 5;
+            this.TokensRefresh_Button.Text = "Refresh";
+            this.TokensRefresh_Button.UseVisualStyleBackColor = true;
+            this.TokensRefresh_Button.Click += new System.EventHandler(this.TokensRefresh_Button_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(553, 84);
+            this.button7.Location = new System.Drawing.Point(755, 79);
             this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(271, 27);
+            this.button7.Size = new System.Drawing.Size(226, 27);
             this.button7.TabIndex = 5;
             this.button7.Text = "Generate Token";
             this.button7.UseVisualStyleBackColor = true;
@@ -375,7 +395,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(553, 60);
+            this.label5.Location = new System.Drawing.Point(755, 55);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(37, 13);
             this.label5.TabIndex = 3;
@@ -383,7 +403,7 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(4, 336);
+            this.button8.Location = new System.Drawing.Point(4, 331);
             this.button8.Name = "button8";
             this.button8.Size = new System.Drawing.Size(271, 27);
             this.button8.TabIndex = 5;
@@ -393,7 +413,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(553, 35);
+            this.label4.Location = new System.Drawing.Point(755, 30);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(45, 13);
             this.label4.TabIndex = 3;
@@ -401,7 +421,7 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(281, 336);
+            this.button9.Location = new System.Drawing.Point(478, 329);
             this.button9.Name = "button9";
             this.button9.Size = new System.Drawing.Size(271, 27);
             this.button9.TabIndex = 5;
@@ -410,7 +430,7 @@
             // 
             // numericUpDown1
             // 
-            this.numericUpDown1.Location = new System.Drawing.Point(597, 7);
+            this.numericUpDown1.Location = new System.Drawing.Point(799, 2);
             this.numericUpDown1.Name = "numericUpDown1";
             this.numericUpDown1.Size = new System.Drawing.Size(46, 20);
             this.numericUpDown1.TabIndex = 6;
@@ -420,7 +440,7 @@
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(13, 424);
             this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(834, 95);
+            this.listBox1.Size = new System.Drawing.Size(992, 95);
             this.listBox1.TabIndex = 2;
             // 
             // label1
@@ -436,34 +456,107 @@
             // 
             this.button17.Location = new System.Drawing.Point(13, 525);
             this.button17.Name = "button17";
-            this.button17.Size = new System.Drawing.Size(834, 28);
+            this.button17.Size = new System.Drawing.Size(992, 28);
             this.button17.TabIndex = 1;
             this.button17.Text = "Clear Log";
             this.button17.UseVisualStyleBackColor = true;
+            // 
+            // button6
+            // 
+            this.button6.Location = new System.Drawing.Point(7, 235);
+            this.button6.Name = "button6";
+            this.button6.Size = new System.Drawing.Size(804, 60);
+            this.button6.TabIndex = 3;
+            this.button6.Text = "Refresh";
+            this.button6.UseVisualStyleBackColor = true;
+            // 
+            // button16
+            // 
+            this.button16.Location = new System.Drawing.Point(7, 302);
+            this.button16.Name = "button16";
+            this.button16.Size = new System.Drawing.Size(105, 58);
+            this.button16.TabIndex = 4;
+            this.button16.Text = "Send Mass Message";
+            this.button16.UseVisualStyleBackColor = true;
+            // 
+            // textBox3
+            // 
+            this.textBox3.Location = new System.Drawing.Point(119, 325);
+            this.textBox3.Name = "textBox3";
+            this.textBox3.Size = new System.Drawing.Size(692, 20);
+            this.textBox3.TabIndex = 5;
+            // 
+            // button18
+            // 
+            this.button18.Location = new System.Drawing.Point(817, 139);
+            this.button18.Name = "button18";
+            this.button18.Size = new System.Drawing.Size(118, 51);
+            this.button18.TabIndex = 6;
+            this.button18.Text = "Reboot Server";
+            this.button18.UseVisualStyleBackColor = true;
+            // 
+            // button19
+            // 
+            this.button19.Location = new System.Drawing.Point(817, 25);
+            this.button19.Name = "button19";
+            this.button19.Size = new System.Drawing.Size(118, 51);
+            this.button19.TabIndex = 6;
+            this.button19.Text = "Start Server";
+            this.button19.UseVisualStyleBackColor = true;
+            // 
+            // button20
+            // 
+            this.button20.Location = new System.Drawing.Point(817, 82);
+            this.button20.Name = "button20";
+            this.button20.Size = new System.Drawing.Size(118, 51);
+            this.button20.TabIndex = 6;
+            this.button20.Text = "Stop Server";
+            this.button20.UseVisualStyleBackColor = true;
+            // 
+            // button21
+            // 
+            this.button21.Location = new System.Drawing.Point(817, 196);
+            this.button21.Name = "button21";
+            this.button21.Size = new System.Drawing.Size(118, 51);
+            this.button21.TabIndex = 6;
+            this.button21.Text = "Kick All";
+            this.button21.UseVisualStyleBackColor = true;
+            // 
+            // button22
+            // 
+            this.button22.Location = new System.Drawing.Point(6, 270);
+            this.button22.Name = "button22";
+            this.button22.Size = new System.Drawing.Size(946, 48);
+            this.button22.TabIndex = 1;
+            this.button22.Text = "Save Changes";
+            this.button22.UseVisualStyleBackColor = true;
+            this.button22.Click += new System.EventHandler(this.button22_Click_1);
             // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(863, 558);
+            this.ClientSize = new System.Drawing.Size(1012, 558);
             this.Controls.Add(this.button17);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.tabControl1);
             this.Name = "Main_Form";
             this.Text = "Legacy Admin Panel";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Form_FormClosing);
+            this.Load += new System.EventHandler(this.Main_Form_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.ConnectedClientsGrid)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
             this.tabPage2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.DatabaseClientsGrid)).EndInit();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown4)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.TokensGrid)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
@@ -474,18 +567,18 @@
 
         #endregion
 
-        private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridView ConnectedClientsGrid;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TabPage tabPage2;
-        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button dbClientsRefresh_Button;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.DataGridView dataGridView2;
+        private System.Windows.Forms.DataGridView DatabaseClientsGrid;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label label6;
@@ -498,11 +591,11 @@
         private System.Windows.Forms.Button button10;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.DataGridView dataGridView3;
+        private System.Windows.Forms.DataGridView TokensGrid;
         private System.Windows.Forms.NumericUpDown numericUpDown3;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button TokensRefresh_Button;
         private System.Windows.Forms.Button button7;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Button button8;
@@ -512,6 +605,14 @@
         private System.Windows.Forms.ListBox listBox1;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Button button17;
+        private System.Windows.Forms.Button button19;
+        private System.Windows.Forms.Button button18;
+        private System.Windows.Forms.TextBox textBox3;
+        private System.Windows.Forms.Button button16;
+        private System.Windows.Forms.Button button6;
+        private System.Windows.Forms.Button button20;
+        private System.Windows.Forms.Button button21;
+        private System.Windows.Forms.Button button22;
     }
 }
 

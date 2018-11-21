@@ -14,13 +14,22 @@ namespace Legacy_Admin
     {
         List<string> logger;
         List<string> command;
+        List<Utils.Users> userList;
         int logPos = 0;
         private Timer _timer;
-        public Main_Form(List<string> logger, List<string>command)
+        public const int WM_NCLBUTTONDOWN = 0xA1;
+        public const int HT_CAPTION = 0x2;
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+        [System.Runtime.InteropServices.DllImportAttribute("user32.dll")]
+        public static extern bool ReleaseCapture();
+
+        public Main_Form(List<string> logger, List<string>command, List<Utils.Users> userList)
         {
             InitializeComponent();
             this.logger = logger;
             this.command = command;
+            this.userList = userList;
         }
 
         private void Main_Form_Load(object sender, EventArgs e)
@@ -28,13 +37,16 @@ namespace Legacy_Admin
             DB_Helper.InitializeDB();
             TokensGrid.DataSource = DB_Helper.getTokenInfo();
             DatabaseClientsGrid.DataSource = DB_Helper.getDbClientInfo();
-            ConnectedClientsGrid.DataSource = getConnectedClientInfo();
+            //ConnectedClientsGrid.DataSource = getConnectedClientInfo();
             listBox1.DrawItem += ListBox1_DrawItem;
 
             _timer = new Timer();
             _timer.Interval = 1000;
             _timer.Tick += _timer_Tick;
             _timer.Start();
+            command.Clear();
+            command.Add("UPDATEUSERS");
+            updateClientList();
         }
 
         private void ListBox1_DrawItem(object sender, DrawItemEventArgs e)
@@ -244,14 +256,44 @@ namespace Legacy_Admin
         //refresh button
         private void button6_Click(object sender, EventArgs e)
         {
-
+            command.Clear();
+            command.Add("UPDATEUSERS");
+            updateClientList();
         }
         //send mass message button
         private void button16_Click(object sender, EventArgs e)
         {
             command.Clear();
-            command.Add("SENDMSG goof yo whats up man it works");
+            command.Add("SENDMSGALL "+textBox3.Text);
         }
         #endregion
+
+        private void updateClientList()
+        {
+            listBox2.Items.Clear();
+            foreach(Utils.Users u in userList)
+            {
+                listBox2.Items.Add(u.Name +"          "+ u.IP);
+            }
+        }
+
+        private void pictureBox1_MouseHover(object sender, EventArgs e)
+        {
+            pictureBox1.Image = Properties.Resources.ExitApp_Hover_Pic;
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void panel1_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                ReleaseCapture();
+                SendMessage(Handle, WM_NCLBUTTONDOWN, HT_CAPTION, 0);
+            }
+        }
     }
 }

@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.ConnectedClientsGrid = new System.Windows.Forms.DataGridView();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.button20 = new System.Windows.Forms.Button();
@@ -75,7 +74,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.button17 = new System.Windows.Forms.Button();
             this.button23 = new System.Windows.Forms.Button();
-            ((System.ComponentModel.ISupportInitialize)(this.ConnectedClientsGrid)).BeginInit();
+            this.listBox2 = new System.Windows.Forms.ListBox();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage2.SuspendLayout();
@@ -87,22 +89,17 @@
             ((System.ComponentModel.ISupportInitialize)(this.YearsNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthsNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.daysNum)).BeginInit();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.SuspendLayout();
-            // 
-            // ConnectedClientsGrid
-            // 
-            this.ConnectedClientsGrid.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.ConnectedClientsGrid.Location = new System.Drawing.Point(6, 25);
-            this.ConnectedClientsGrid.Name = "ConnectedClientsGrid";
-            this.ConnectedClientsGrid.Size = new System.Drawing.Size(805, 203);
-            this.ConnectedClientsGrid.TabIndex = 0;
             // 
             // tabControl1
             // 
             this.tabControl1.Controls.Add(this.tabPage1);
             this.tabControl1.Controls.Add(this.tabPage2);
             this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Location = new System.Drawing.Point(13, 13);
+            this.tabControl1.Location = new System.Drawing.Point(8, 131);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
             this.tabControl1.Size = new System.Drawing.Size(992, 392);
@@ -110,6 +107,8 @@
             // 
             // tabPage1
             // 
+            this.tabPage1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(38)))), ((int)(((byte)(51)))));
+            this.tabPage1.Controls.Add(this.listBox2);
             this.tabPage1.Controls.Add(this.button20);
             this.tabPage1.Controls.Add(this.button19);
             this.tabPage1.Controls.Add(this.button21);
@@ -118,18 +117,16 @@
             this.tabPage1.Controls.Add(this.button16);
             this.tabPage1.Controls.Add(this.button6);
             this.tabPage1.Controls.Add(this.label3);
-            this.tabPage1.Controls.Add(this.ConnectedClientsGrid);
             this.tabPage1.Location = new System.Drawing.Point(4, 22);
             this.tabPage1.Name = "tabPage1";
             this.tabPage1.Padding = new System.Windows.Forms.Padding(3);
             this.tabPage1.Size = new System.Drawing.Size(984, 366);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "Server";
-            this.tabPage1.UseVisualStyleBackColor = true;
             // 
             // button20
             // 
-            this.button20.Location = new System.Drawing.Point(817, 82);
+            this.button20.Location = new System.Drawing.Point(257, 82);
             this.button20.Name = "button20";
             this.button20.Size = new System.Drawing.Size(118, 51);
             this.button20.TabIndex = 6;
@@ -139,7 +136,9 @@
             // 
             // button19
             // 
-            this.button19.Location = new System.Drawing.Point(817, 25);
+            this.button19.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button19.FlatAppearance.BorderSize = 3;
+            this.button19.Location = new System.Drawing.Point(257, 25);
             this.button19.Name = "button19";
             this.button19.Size = new System.Drawing.Size(118, 51);
             this.button19.TabIndex = 6;
@@ -149,7 +148,7 @@
             // 
             // button21
             // 
-            this.button21.Location = new System.Drawing.Point(817, 196);
+            this.button21.Location = new System.Drawing.Point(257, 196);
             this.button21.Name = "button21";
             this.button21.Size = new System.Drawing.Size(118, 51);
             this.button21.TabIndex = 6;
@@ -159,7 +158,7 @@
             // 
             // button18
             // 
-            this.button18.Location = new System.Drawing.Point(817, 139);
+            this.button18.Location = new System.Drawing.Point(257, 139);
             this.button18.Name = "button18";
             this.button18.Size = new System.Drawing.Size(118, 51);
             this.button18.TabIndex = 6;
@@ -188,7 +187,7 @@
             // 
             this.button6.Location = new System.Drawing.Point(7, 235);
             this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(804, 60);
+            this.button6.Size = new System.Drawing.Size(244, 60);
             this.button6.TabIndex = 3;
             this.button6.Text = "Refresh";
             this.button6.UseVisualStyleBackColor = true;
@@ -197,7 +196,8 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(356, 9);
+            this.label3.ForeColor = System.Drawing.SystemColors.ControlLightLight;
+            this.label3.Location = new System.Drawing.Point(78, 9);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(93, 13);
             this.label3.TabIndex = 2;
@@ -205,6 +205,7 @@
             // 
             // tabPage2
             // 
+            this.tabPage2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(38)))), ((int)(((byte)(51)))));
             this.tabPage2.Controls.Add(this.dbClientsRefresh_Button);
             this.tabPage2.Controls.Add(this.button22);
             this.tabPage2.Controls.Add(this.button5);
@@ -219,7 +220,6 @@
             this.tabPage2.Size = new System.Drawing.Size(984, 366);
             this.tabPage2.TabIndex = 1;
             this.tabPage2.Text = "Manage Clients";
-            this.tabPage2.UseVisualStyleBackColor = true;
             // 
             // dbClientsRefresh_Button
             // 
@@ -302,6 +302,7 @@
             // 
             // tabPage3
             // 
+            this.tabPage3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(38)))), ((int)(((byte)(51)))));
             this.tabPage3.Controls.Add(this.button23);
             this.tabPage3.Controls.Add(this.groupBox1);
             this.tabPage3.Controls.Add(this.textBox2);
@@ -322,7 +323,6 @@
             this.tabPage3.Size = new System.Drawing.Size(984, 366);
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Mange Tokens";
-            this.tabPage3.UseVisualStyleBackColor = true;
             // 
             // groupBox1
             // 
@@ -529,9 +529,10 @@
             // 
             // listBox1
             // 
+            this.listBox1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
             this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(13, 424);
+            this.listBox1.Location = new System.Drawing.Point(8, 542);
             this.listBox1.Name = "listBox1";
             this.listBox1.Size = new System.Drawing.Size(992, 95);
             this.listBox1.TabIndex = 2;
@@ -539,7 +540,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 408);
+            this.label1.Location = new System.Drawing.Point(5, 526);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(62, 13);
             this.label1.TabIndex = 3;
@@ -547,7 +548,7 @@
             // 
             // button17
             // 
-            this.button17.Location = new System.Drawing.Point(13, 525);
+            this.button17.Location = new System.Drawing.Point(8, 643);
             this.button17.Name = "button17";
             this.button17.Size = new System.Drawing.Size(992, 28);
             this.button17.TabIndex = 1;
@@ -564,20 +565,65 @@
             this.button23.UseVisualStyleBackColor = true;
             this.button23.Click += new System.EventHandler(this.button23_Click);
             // 
+            // listBox2
+            // 
+            this.listBox2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
+            this.listBox2.ForeColor = System.Drawing.Color.White;
+            this.listBox2.FormattingEnabled = true;
+            this.listBox2.Location = new System.Drawing.Point(4, 25);
+            this.listBox2.Name = "listBox2";
+            this.listBox2.Size = new System.Drawing.Size(247, 199);
+            this.listBox2.TabIndex = 7;
+            // 
+            // panel1
+            // 
+            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(29)))), ((int)(((byte)(38)))), ((int)(((byte)(51)))));
+            this.panel1.Controls.Add(this.pictureBox1);
+            this.panel1.Location = new System.Drawing.Point(-8, -7);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(1021, 46);
+            this.panel1.TabIndex = 4;
+            this.panel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.panel1_MouseDown);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::Legacy_Admin.Properties.Resources.ExitApp_Pic;
+            this.pictureBox1.Location = new System.Drawing.Point(985, 13);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(25, 25);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.pictureBox1.MouseHover += new System.EventHandler(this.pictureBox1_MouseHover);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::Legacy_Admin.Properties.Resources.LegacyTextBig_Pic;
+            this.pictureBox2.Location = new System.Drawing.Point(328, 45);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(334, 80);
+            this.pictureBox2.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
+            this.pictureBox2.TabIndex = 1;
+            this.pictureBox2.TabStop = false;
+            // 
             // Main_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1012, 558);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(36)))), ((int)(((byte)(46)))), ((int)(((byte)(61)))));
+            this.ClientSize = new System.Drawing.Size(1012, 677);
+            this.Controls.Add(this.pictureBox2);
+            this.Controls.Add(this.panel1);
             this.Controls.Add(this.button17);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listBox1);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "Main_Form";
             this.Text = "Legacy Admin Panel";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_Form_FormClosing);
             this.Load += new System.EventHandler(this.Main_Form_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.ConnectedClientsGrid)).EndInit();
             this.tabControl1.ResumeLayout(false);
             this.tabPage1.ResumeLayout(false);
             this.tabPage1.PerformLayout();
@@ -592,14 +638,16 @@
             ((System.ComponentModel.ISupportInitialize)(this.YearsNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.MonthsNum)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.daysNum)).EndInit();
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private System.Windows.Forms.DataGridView ConnectedClientsGrid;
         private System.Windows.Forms.TabControl tabControl1;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.Label label3;
@@ -646,6 +694,10 @@
         private System.Windows.Forms.Button button21;
         private System.Windows.Forms.Button button22;
         private System.Windows.Forms.Button button23;
+        private System.Windows.Forms.ListBox listBox2;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.PictureBox pictureBox2;
     }
 }
 

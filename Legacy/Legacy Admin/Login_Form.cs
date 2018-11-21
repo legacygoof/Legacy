@@ -25,6 +25,7 @@ namespace Legacy_Admin
 
         public List<string> serverLog = new List<string>();
         public List<string> command = new List<string>();
+        public List<Utils.Users> userList = new List<Utils.Users>();
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread msgLoop;
         public bool loggedin = false;
@@ -77,7 +78,7 @@ namespace Legacy_Admin
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Main_Form form = new Main_Form(serverLog,command);
+            Main_Form form = new Main_Form(serverLog,command,userList);
             form.Show();
             this.Hide();
         }
@@ -153,6 +154,18 @@ namespace Legacy_Admin
                     if(msgArgs[0] == ProcessCodes.Logger.ToString())
                     {
                         serverLog.Add(text);
+                    }
+
+                    if(msgArgs[0] == ProcessCodes.UpdateUsers.ToString())
+                    {
+                        string[] users = msg.Split(',');
+                        userList.Clear();
+                        for (int i = 1; i < users.Length; i++)
+                        {
+                            string[] temp = users[i].Split(' ');
+                            if(temp.Length > 1)
+                                userList.Add(new Utils.Users(temp[0], temp[1]));
+                        }
                     }
                     
                     Thread.Sleep(2);
@@ -243,7 +256,7 @@ namespace Legacy_Admin
 
         private void pictureBox2_Click(object sender, EventArgs e)
         {
-
+            
         }
     }
 }

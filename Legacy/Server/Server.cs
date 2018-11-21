@@ -48,6 +48,23 @@ namespace Server
             }
             Console.ResetColor();
         }
+        // user ip, user ip
+        //
+        public void sendUpdatedUsers()
+        {
+            string msg = ProcessCodes.UpdateUsers.ToString()+" ,";
+            foreach(Users u in userList)
+            {
+                if (u.Name != "" || u.Name != null)
+                    msg += u.Name + " " + u.IP + " ";
+            }
+            foreach (Admins a in adminList)
+            {
+                Socket socket = a.clientSocket;
+                byte[] data = Encoding.ASCII.GetBytes(msg);
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
+            }
+        }
 
         public void sendAdminsLog(string message)
         {
@@ -82,15 +99,27 @@ namespace Server
                 Socket socket = user.clientSocket;
                 byte[] data = Encoding.ASCII.GetBytes(msg);
                 socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-                socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+
             }
             else if(admin!=null)
             {
                 Socket socket = admin.clientSocket;
                 byte[] data = Encoding.ASCII.GetBytes(msg);
                 socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
-              //  socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
             }
+        }
+
+        public void SendUserMsgAll(string message)
+        {
+            string msg = ProcessCodes.Message.ToString() + " " + message;
+            foreach (Users user in userList)
+            {
+                Socket socket = user.clientSocket;
+                byte[] data = Encoding.ASCII.GetBytes(msg);
+                socket.BeginSend(data, 0, data.Length, SocketFlags.None, new AsyncCallback(SendCallback), socket);
+                
+            }
+
         }
 
         public void BanUser(string username, string message)
@@ -297,6 +326,16 @@ namespace Server
                         else if (msg[1] == "SENDMSG")
                         {
                             SendUserMsg(msg[2], message);
+                            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+                        }
+                        else if (msg[1] == "SENDMSGALL")
+                        {
+                            SendUserMsgAll(message);
+                            socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
+                        }
+                        else if (msg[1] == "UPDATEUSERS")
+                        {
+                            sendUpdatedUsers();
                             socket.BeginReceive(g_buffer, 0, g_buffer.Length, SocketFlags.None, new AsyncCallback(ReceiveCallback), socket);
                         }
 

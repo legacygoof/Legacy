@@ -196,5 +196,10 @@ namespace Legacy
         {
             pictureBox1.Image = Properties.Resources.ExitApp_Pic;
         }
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

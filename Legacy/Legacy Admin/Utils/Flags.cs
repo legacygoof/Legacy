@@ -14,6 +14,7 @@ public enum ProcessCodes : ushort
     Version,
     Logger,
     Command,
+    UpdateUsers,
     Fail
 
 }

@@ -13,6 +13,7 @@ public enum ProcessCodes : ushort
     Reboot,
     Version,
     Logger,
+    Command,
     Fail
 }
 /// <summary>

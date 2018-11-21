@@ -135,6 +135,7 @@
             this.button20.TabIndex = 6;
             this.button20.Text = "Stop Server";
             this.button20.UseVisualStyleBackColor = true;
+            this.button20.Click += new System.EventHandler(this.button20_Click);
             // 
             // button19
             // 
@@ -144,6 +145,7 @@
             this.button19.TabIndex = 6;
             this.button19.Text = "Start Server";
             this.button19.UseVisualStyleBackColor = true;
+            this.button19.Click += new System.EventHandler(this.button19_Click);
             // 
             // button21
             // 
@@ -153,6 +155,7 @@
             this.button21.TabIndex = 6;
             this.button21.Text = "Kick All";
             this.button21.UseVisualStyleBackColor = true;
+            this.button21.Click += new System.EventHandler(this.button21_Click);
             // 
             // button18
             // 
@@ -162,6 +165,7 @@
             this.button18.TabIndex = 6;
             this.button18.Text = "Reboot Server";
             this.button18.UseVisualStyleBackColor = true;
+            this.button18.Click += new System.EventHandler(this.button18_Click);
             // 
             // textBox3
             // 
@@ -178,6 +182,7 @@
             this.button16.TabIndex = 4;
             this.button16.Text = "Send Mass Message";
             this.button16.UseVisualStyleBackColor = true;
+            this.button16.Click += new System.EventHandler(this.button16_Click);
             // 
             // button6
             // 
@@ -187,6 +192,7 @@
             this.button6.TabIndex = 3;
             this.button6.Text = "Refresh";
             this.button6.UseVisualStyleBackColor = true;
+            this.button6.Click += new System.EventHandler(this.button6_Click);
             // 
             // label3
             // 
@@ -523,6 +529,7 @@
             // 
             // listBox1
             // 
+            this.listBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.listBox1.FormattingEnabled = true;
             this.listBox1.Location = new System.Drawing.Point(13, 424);
             this.listBox1.Name = "listBox1";

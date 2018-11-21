@@ -24,12 +24,14 @@ namespace Legacy_Admin
         public static extern bool ReleaseCapture();
 
         public List<string> serverLog = new List<string>();
+        public List<string> command = new List<string>();
         Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
         Thread msgLoop;
         public bool loggedin = false;
         private static string version = "Admin_1.01";
         private static bool version_checked = false;
-
+        System.Windows.Forms.Timer timer;
+        public int cmdpos = 0;
 
         public Login_Form()
         {
@@ -38,6 +40,7 @@ namespace Legacy_Admin
 
         private void Login_Form_Load(object sender, EventArgs e)
         {
+            
             BackgroundWorker backgroundWorker = new BackgroundWorker();
             backgroundWorker.DoWork += BackgroundWorker_DoWork;
             backgroundWorker.RunWorkerCompleted += BackgroundWorker_RunWorkerCompleted;
@@ -47,11 +50,34 @@ namespace Legacy_Admin
             msgLoop.Start();
             this.panel1.MouseDown += panel1_MouseDown;
             Connect();
+
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 1000;
+            timer.Tick += timer_tick;
+            timer.Start();
+        }
+
+        private void timer_tick(object sender, EventArgs e)
+        {
+            checkCommands();
+        }
+
+        private void checkCommands()
+        {
+            
+            if (command.Count == 1)
+            {
+                
+                byte[] data = PacketWriter.sendString(Convert.ToString(8 + " " + command[0]));
+                client.Send(data);
+                command.Clear();
+                
+            }
         }
 
         private void BackgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            Main_Form form = new Main_Form(serverLog);
+            Main_Form form = new Main_Form(serverLog,command);
             form.Show();
             this.Hide();
         }

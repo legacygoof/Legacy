@@ -13,12 +13,14 @@ namespace Legacy_Admin
     public partial class Main_Form : Form
     {
         List<string> logger;
+        List<string> command;
         int logPos = 0;
         private Timer _timer;
-        public Main_Form(List<string> logger)
+        public Main_Form(List<string> logger, List<string>command)
         {
             InitializeComponent();
             this.logger = logger;
+            this.command = command;
         }
 
         private void Main_Form_Load(object sender, EventArgs e)
@@ -27,11 +29,39 @@ namespace Legacy_Admin
             TokensGrid.DataSource = DB_Helper.getTokenInfo();
             DatabaseClientsGrid.DataSource = DB_Helper.getDbClientInfo();
             ConnectedClientsGrid.DataSource = getConnectedClientInfo();
+            listBox1.DrawItem += ListBox1_DrawItem;
 
             _timer = new Timer();
             _timer.Interval = 1000;
             _timer.Tick += _timer_Tick;
             _timer.Start();
+        }
+
+        private void ListBox1_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            Color c = new Color();
+            string txt = logger[e.Index];
+            string color;
+            string[] msgs = logger[e.Index].Split(' ');
+            color = msgs[0];
+            string fullmsg = "";
+            for (int i = 1; i < msgs.Length; i++)
+                fullmsg += msgs[i] + " ";
+
+            switch (color)
+            {
+                case "GREEN": { c = Color.Green; } break;
+                case "YELLOW": { c = Color.Yellow; } break;
+                case "RED": { c = Color.Red; } break;
+                default: c = Color.Black; break;
+            }
+            e.Graphics.DrawString(
+                fullmsg,
+                listBox1.Font,
+                new SolidBrush(c),
+                0,
+                e.Index * listBox1.ItemHeight
+                 );
         }
 
         private void _timer_Tick(object sender, EventArgs e)
@@ -43,6 +73,7 @@ namespace Legacy_Admin
         {
             if(logger.Count > logPos)
             {
+                
                 listBox1.Items.Add(logger[logPos]);
                 logPos++;
             }
@@ -186,8 +217,41 @@ namespace Legacy_Admin
         {
             DB_Helper.Generate_Token(90, Convert.ToInt32(tokenNum.Value));
         }
+
         #endregion
 
-        
+        #region server buttons
+        //start server button
+        private void button19_Click(object sender, EventArgs e)
+        {
+
+        }
+        //stop server button
+        private void button20_Click(object sender, EventArgs e)
+        {
+
+        }
+        //reboot server button
+        private void button18_Click(object sender, EventArgs e)
+        {
+
+        }
+        //kick all button
+        private void button21_Click(object sender, EventArgs e)
+        {
+
+        }
+        //refresh button
+        private void button6_Click(object sender, EventArgs e)
+        {
+
+        }
+        //send mass message button
+        private void button16_Click(object sender, EventArgs e)
+        {
+            command.Clear();
+            command.Add("SENDMSG goof yo whats up man it works");
+        }
+        #endregion
     }
 }
